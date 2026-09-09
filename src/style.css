@@ -1,0 +1,130 @@
+:root {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light;
+  color: rgba(0, 0, 0, 0.87);
+  background: linear-gradient(135deg, #e8e5d9 0%, #d0c9c0 100%);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e8e5d9 0%, #d0c9c0 100%);
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+/* Leaflet styles customization */
+.leaflet-container {
+  background: linear-gradient(135deg, #e8e5d9 0%, #d0c9c0 100%);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.leaflet-control-attribution {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 0.75rem;
+}
+
+.leaflet-control-zoom {
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  font-size: 1.25rem;
+  font-weight: bold;
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Popup styling */
+.leaflet-popup-content-wrapper {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.leaflet-popup-tip {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content h3 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.popup-content p {
+  margin: 4px 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.popup-content a {
+  color: #d4a574;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.popup-content a:hover {
+  color: #8b6f47;
+  text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .leaflet-control-zoom {
+    margin: 8px;
+  }
+
+  .leaflet-control-attribution {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+  }
+}
