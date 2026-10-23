@@ -28,11 +28,30 @@ export function initializeMap(container: HTMLElement) {
     overlayPane.style.opacity = '0.1'
   }
 
-  loadPrisons(map)
-  return map
+  const markers = new Map<string, L.Marker>()
+  const prisonsReady = loadPrisons(map, markers)
+
+  return {
+    map,
+    async focusPrison(name: string) {
+      await prisonsReady
+      const normalizedName = normalizeName(name)
+      const marker = markers.get(normalizedName) || [...markers.entries()].find(([prisonName]) =>
+        prisonName.includes(normalizedName) || normalizedName.includes(prisonName),
+      )?.[1]
+
+      if (!marker) {
+        console.warn(`No map location found for ${name}`)
+        return
+      }
+
+      map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 12), { duration: 0.8 })
+      marker.openPopup()
+    },
+  }
 }
 
-async function loadPrisons(map: L.Map) {
+async function loadPrisons(map: L.Map, markers: Map<string, L.Marker>) {
   try {
     const prisons = await getPrisonLocations()
 
@@ -40,6 +59,7 @@ async function loadPrisons(map: L.Map) {
       if (prison.latitude && prison.longitude) {
         const marker = createPinMarker(prison.latitude, prison.longitude, prison.name)
         marker.addTo(map)
+        markers.set(normalizeName(prison.name || ''), marker)
 
         // Add popup with prison information
         const popupContent = `
@@ -48,6 +68,7 @@ async function loadPrisons(map: L.Map) {
             ${prison.address ? `<p>${prison.address}</p>` : ''}
             ${prison.phone ? `<p>Phone: ${prison.phone}</p>` : ''}
             ${prison.website ? `<p><a href="${prison.website}" target="_blank">Website</a></p>` : ''}
+            ${formatEvents(prison)}
           </div>
         `
         marker.bindPopup(popupContent)
@@ -56,6 +77,23 @@ async function loadPrisons(map: L.Map) {
   } catch (error) {
     console.error('Error loading prisons:', error)
   }
+}
+
+function normalizeName(name: string) {
+  return name.toLowerCase().replace(/(correctional institution|correctional center|facility)/g, '').replace(/[^a-z0-9]/g, '')
+}
+
+function formatEvents(prison: any) {
+  const events = Array.isArray(prison.events)
+    ? prison.events
+    : Array.isArray(prison.upcoming_events)
+      ? prison.upcoming_events
+      : []
+
+  if (!events.length) return '<p class="popup-content__events">No upcoming events listed.</p>'
+
+  const items = events.map((event: any) => `<li>${typeof event === 'string' ? event : event.title || event.name || 'Event'}</li>`).join('')
+  return `<div class="popup-content__events"><strong>Upcoming events</strong><ul>${items}</ul></div>`
 }
 
 function createPinMarker(lat: number, lng: number, name: string) {
