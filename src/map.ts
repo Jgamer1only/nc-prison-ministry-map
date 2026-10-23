@@ -15,7 +15,7 @@ export function initializeMap(container: HTMLElement) {
 
   // Add terrain tile layer with warm earth tones
   // Using OpenTopoMap which provides terrain styling
-  L.tileLayer('https://{s}.tile.opentopomap.org/tiles/terrainclassic/{z}/{x}/{y}.png', {
+  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> contributors',
     maxZoom: 17,
     opacity: 0.85,
